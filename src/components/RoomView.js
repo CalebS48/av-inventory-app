@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react'; // <-- Import useCallback
 
 // API endpoint for your serverless function
 const API_ENDPOINT = '/.netlify/functions/items';
@@ -9,8 +9,8 @@ function RoomView({ location, onBack }) {
   const [error, setError] = useState(null);
   const [newItemName, setNewItemName] = useState('');
 
-  // Function to fetch inventory data from the backend
-  const fetchItems = async () => {
+  // Function to fetch inventory data, now wrapped in useCallback
+  const fetchItems = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await fetch(API_ENDPOINT);
@@ -28,12 +28,12 @@ function RoomView({ location, onBack }) {
     } finally {
       setIsLoading(false);
     }
-  };
-  
-  // useEffect hook runs once when the component loads
+  }, [location.floor, location.room]); // <-- Dependencies for useCallback
+
+  // useEffect hook now correctly includes fetchItems in its dependency array
   useEffect(() => {
     fetchItems();
-  }, [location]); // Refetch if location changes
+  }, [fetchItems]); // <-- Correct dependency
 
   // Function to handle adding a new item
   const handleAddItem = async (e) => {
