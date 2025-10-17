@@ -1,1 +1,20 @@
+# Netlify Build Configuration
 
+[build]
+  # This command builds your React app for production.
+  # We will set this up when we create the frontend.
+  command = "npm run build"
+  
+  # The directory where your serverless functions live.
+  functions = "netlify/functions"
+  
+  # The directory that contains the final built version of your site.
+  publish = "build"
+
+[dev]
+  # This tells the Netlify local development server how to run your app.
+  # We will configure this later.
+  command = "npm start"
+  port = 3000
+  publish = "public"
+  targetPort = 8888
